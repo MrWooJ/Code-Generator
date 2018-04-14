@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<title>Compiler Project (Phase 1): Code Generator</title>
+	<!-- Favicon-->
+	<link rel="icon" href="../node_modules/adminbsb-materialdesign/favicon.ico" type="image/x-icon">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+	<!-- Bootstrap Core Css -->
+	<link href="../node_modules/adminbsb-materialdesign/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+	<!-- Waves Effect Css -->
+	<link href="../node_modules/adminbsb-materialdesign/plugins/node-waves/waves.css" rel="stylesheet" />
+
+	<!-- Animation Css -->
+	<link href="../node_modules/adminbsb-materialdesign/plugins/animate-css/animate.css" rel="stylesheet" />
+
+	<!-- Morris Chart Css-->
+	<link href="../node_modules/adminbsb-materialdesign/plugins/morrisjs/morris.css" rel="stylesheet" />
+
+	<!-- Custom Css -->
+	<link href="../node_modules/adminbsb-materialdesign/css/style.css" rel="stylesheet">
+
+	<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+	<link href="../node_modules/adminbsb-materialdesign/css/themes/theme-cyan.css" rel="stylesheet" />
+
+	<link href="../css/mainWindow.css" rel="stylesheet">
+</head>
+
+<body class="theme-cyan">
+	<!-- Page Loader -->
+	<div class="page-loader-wrapper">
+		<div class="loader">
+			<div class="preloader">
+				<div class="spinner-layer pl-pink">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+			<p>Please wait...</p>
+			<p>We are compiling and executing your code snippet</p>
+		</div>
+	</div>
+	<!-- #END# Page Loader -->
+	<!-- Overlay For Sidebars -->
+	<div class="overlay"></div>
+	<!-- #END# Overlay For Sidebars -->
+
+	<section class="clearfix">
+		<br>
+		<div class="container-fluid">
+			<div class="row clearfix">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div class="card">
+						<div class="header">
+							<h2>Input Snippet</h2>
+						</div>
+						<div class="body card-body-top-fix-height">
+							<div class="row clearfix">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<h2 class="card-inside-title">
+										Input
+										<small>Please write your code manually here or import it from a .txt file or use default input. To start translation click the Translate button.</small>
+									</h2>
+                                    <div class="form-group">
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div class="form-line">
+												<textarea style="font-size: 14px;" id="inputSnippetInputTextarea" rows="13" class="form-control no-resize" placeholder="Okay, Here we go! Write the input and let me do the rest ;)"></textarea>
+											</div>
+										</div>
+                                    </div>
+								</div>
+							</div>
+							<div class="row clearfix">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+									<button type="button" id="DefaultInputButton" class="btn bg-cyan btn-block waves-effect">Default Input</button>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+									<button type="button" id="ResetButton" class="btn bg-cyan btn-block waves-effect">Reset</button>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+									<button type="button" id="ImportButton" class="btn bg-cyan btn-block waves-effect">Import</button>
+								</div>
+							</div>
+							<div class="row clearfix">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+									<button type="button" id="ClearInputButton" class="btn bg-cyan btn-block waves-effect">Clear Input</button>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+									<button type="button" id="TranslateButton" class="btn bg-cyan btn-block waves-effect">Translate</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div class="card">
+						<div class="header">
+							<h2>Code Snippet</h2>
+						</div>
+						<div class="body card-body-top-fix-height">
+							<div class="row clearfix">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<h2 class="card-inside-title">
+										Output
+										<small>The output of translation goes here. Feel free to have addition and/or deletion. You can either compile or export it simply.</small>
+									</h2>
+                                    <div class="form-group">
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div class="form-line">
+												<textarea style="font-size: 14px;" id="codeSnippetOutputTextarea" rows="15" class="form-control no-resize" placeholder="Okay, Here we go! Write the input and let me do the rest ;)"></textarea>
+											</div>
+										</div>
+                                    </div>
+								</div>
+							</div>
+							<div class="row clearfix">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+									<button type="button" id="ExportButton" class="btn bg-cyan btn-block waves-effect">Export</button>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+									<button type="button" id="CompileRunButton" class="btn bg-cyan btn-block waves-effect">Compile & Run</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div class="card">
+						<div class="header">
+							<h2>Standard Output Stream</h2>
+						</div>
+						<div class="body card-body-bottom-fix-height">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<h2 class="card-inside-title">
+									STDOUT
+									<small>The standard output stream is the default destination of output for applications. In most systems, it is usually directed by default to the text console.</small>
+								</h2>
+								<div class="form-group">
+									<div class="form-line">
+										<textarea style="font-size: 13px;" id="STDOUTTextarea" rows="4" class="form-control no-resize" placeholder="The result of standard output stream while compile and run will become written here." disabled></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div class="card">
+						<div class="header">
+							<h2>Standard Error Stream</h2>
+						</div>
+						<div class="body card-body-bottom-fix-height">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<h2 class="card-inside-title">
+									STDERR
+									<small>The standard error stream is the default destination for error messages and other diagnostic warnings. Like stdout, it is usually also directed by default to the text console.</small>
+								</h2>
+								<div class="form-group">
+									<div class="form-line">
+										<textarea style="font-size: 13px;" id="STDERRTextarea" rows="4" class="form-control no-resize" placeholder="The result of standard error stream while compile and run will become written here." disabled></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<input type="file" id="exampleInputFile" accept="text/plain,.txt" class="hidden">
+
+	<script>
+		window.$ = window.jQuery = require('jquery');
+		$('.page-loader-wrapper').fadeOut();
+	</script>
+
+	<!-- Jquery Core Js -->
+	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
+	<!-- Bootstrap Core Js -->
+	<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+	<!-- Select Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+	<!-- Slimscroll Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+	<!-- Waves Effect Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/node-waves/waves.js"></script>
+
+	<!-- Jquery CountTo Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/jquery-countto/jquery.countTo.js"></script>
+
+	<!-- Morris Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/raphael/raphael.min.js"></script>
+	<script src="../node_modules/adminbsb-materialdesign/plugins/morrisjs/morris.js"></script>
+
+	<!-- ChartJs -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/chartjs/Chart.bundle.js"></script>
+
+	<!-- Flot Charts Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/flot-charts/jquery.flot.js"></script>
+	<script src="../node_modules/adminbsb-materialdesign/plugins/flot-charts/jquery.flot.resize.js"></script>
+	<script src="../node_modules/adminbsb-materialdesign/plugins/flot-charts/jquery.flot.pie.js"></script>
+	<script src="../node_modules/adminbsb-materialdesign/plugins/flot-charts/jquery.flot.categories.js"></script>
+	<script src="../node_modules/adminbsb-materialdesign/plugins/flot-charts/jquery.flot.time.js"></script>
+
+	<!-- Sparkline Chart Plugin Js -->
+	<script src="../node_modules/adminbsb-materialdesign/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+	<!-- Custom Js -->
+	<script src="../js/mainWindow.js"></script>
+</body>
+
+</html>
