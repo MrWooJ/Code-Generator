@@ -1,0 +1,7 @@
+.card-body-top-fix-height {
+	height:520px; overflow-y:auto; overflow-x:hidden;
+}
+
+.card-body-bottom-fix-height {
+	height:237px; overflow-y:auto; overflow-x:hidden;
+}
